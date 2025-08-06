@@ -1,8 +1,13 @@
-package com.example.notesapp.data
+package com.example.notesapp.domain
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.notesapp.ui.theme.*
+import com.example.notesapp.ui.theme.Cream80
+import com.example.notesapp.ui.theme.Lavender80
+import com.example.notesapp.ui.theme.LightBlue
+import com.example.notesapp.ui.theme.Peach80
+import com.example.notesapp.ui.theme.SoftGreen
+import com.example.notesapp.ui.theme.SoftPink
 
 @Entity
 data class Note(
