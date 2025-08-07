@@ -1,15 +1,17 @@
 package com.example.notesapp.domain.use_case
 
+import com.example.notesapp.domain.InvalidNoteException
 import com.example.notesapp.domain.Note
 import com.example.notesapp.domain.repository.NoteRepository
 import com.example.notesapp.domain.util.NoteOrder
 import com.example.notesapp.domain.util.OrderType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlin.jvm.Throws
 
 class NoteUseCase(private val noteRepository: NoteRepository) {
 
-    operator fun invoke(noteOrder: NoteOrder = NoteOrder.Date(OrderType.Descending)): Flow<List<Note>> {
+    fun getNotes(noteOrder: NoteOrder = NoteOrder.Date(OrderType.Descending)): Flow<List<Note>> {
         return noteRepository.getNotes().map { notes ->
             when(noteOrder.orderType) {
                 is OrderType.Ascending -> {
@@ -30,7 +32,18 @@ class NoteUseCase(private val noteRepository: NoteRepository) {
         }
     }
 
-    suspend operator fun invoke(note: Note) {
+    suspend fun deleteNote(note: Note) {
         noteRepository.deleteNote(note)
+    }
+
+    @Throws(InvalidNoteException::class)
+    suspend fun insertNote(note: Note) {
+        if (note.title.isBlank()) {
+            throw InvalidNoteException("The title of the note can't be empty.")
+        }
+        if (note.content.isBlank()) {
+            throw InvalidNoteException("The content of the note can't be empty.")
+        }
+        noteRepository.insertNote(note)
     }
 }
