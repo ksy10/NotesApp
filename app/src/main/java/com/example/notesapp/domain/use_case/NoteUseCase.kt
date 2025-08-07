@@ -7,7 +7,7 @@ import com.example.notesapp.domain.util.OrderType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetNoteUseCase(private val noteRepository: NoteRepository) {
+class NoteUseCase(private val noteRepository: NoteRepository) {
 
     operator fun invoke(noteOrder: NoteOrder = NoteOrder.Date(OrderType.Descending)): Flow<List<Note>> {
         return noteRepository.getNotes().map { notes ->
@@ -28,5 +28,9 @@ class GetNoteUseCase(private val noteRepository: NoteRepository) {
                 }
             }
         }
+    }
+
+    suspend operator fun invoke(note: Note) {
+        noteRepository.deleteNote(note)
     }
 }
